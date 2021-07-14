@@ -1,6 +1,6 @@
 import { AnimBinder } from './anim-binder.js';
 import { AnimTarget } from '../evaluator/anim-target.js';
-
+import { Entity } from '../../framework/entity.js';
 /**
  * @private
  * @class
@@ -34,7 +34,7 @@ class DefaultAnimBinder {
 
             // walk up to the first parent node of entity type (skips internal nodes of Model)
             var object = node;
-            while (object && object.prototype.name !== 'Entity') {
+            while (object && !(object instanceof Entity)) {
                 object = object.parent;
             }
 
@@ -56,7 +56,7 @@ class DefaultAnimBinder {
             'localPosition': function (node) {
                 var object = node.localPosition;
                 var func = function (value) {
-                    object.set.apply(object, value);
+                    object.set(...value);
                 };
                 return DefaultAnimBinder.createAnimTarget(func, 'vector', 3, node, 'localPosition');
             },
@@ -64,7 +64,7 @@ class DefaultAnimBinder {
             'localRotation': function (node) {
                 var object = node.localRotation;
                 var func = function (value) {
-                    object.set.apply(object, value);
+                    object.set(...value);
                 };
                 return DefaultAnimBinder.createAnimTarget(func, 'quaternion', 4, node, 'localRotation');
             },
@@ -72,7 +72,7 @@ class DefaultAnimBinder {
             'localScale': function (node) {
                 var object = node.localScale;
                 var func = function (value) {
-                    object.set.apply(object, value);
+                    object.set(...value);
                 };
                 return DefaultAnimBinder.createAnimTarget(func, 'vector', 3, node, 'localScale');
             },

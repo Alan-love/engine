@@ -114,7 +114,6 @@ class Scene extends EventHandler {
 
         this._skyboxPrefiltered = [null, null, null, null, null, null];
 
-        this._firstUpdateSkybox = true;
         this._skyboxCubeMap = null;
         this.skyboxModel = null;
 
@@ -431,7 +430,7 @@ class Scene extends EventHandler {
 
             var skyLayer = this.layers.getLayerById(LAYERID_SKYBOX);
             if (skyLayer) {
-                var node = new GraphNode();
+                var node = new GraphNode("Skybox");
                 var mesh = createBox(device);
                 var meshInstance = new MeshInstance(mesh, material, node);
                 meshInstance.cull = false;
@@ -444,12 +443,6 @@ class Scene extends EventHandler {
 
                 skyLayer.addMeshInstances(model.meshInstances);
                 this.skyLayer = skyLayer;
-
-                // enable the layer on first skybox update (the skybox layer is created disabled)
-                if (this._firstUpdateSkybox) {
-                    skyLayer.enabled = true;
-                    this._firstUpdateSkybox = false;
-                }
 
                 this.fire("set:skybox", usedTex);
             }
